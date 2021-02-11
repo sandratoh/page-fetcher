@@ -12,6 +12,17 @@ const args = process.argv.slice(2);
 const url = args[0];
 const filePath = args[1];
 
+let fileExist = false;
+
+// asynchronous file check
+fs.access(filePath, (error) => {
+  if (error) {
+    return rl.close();
+  } else {
+    fileExist = true;
+  }
+});
+
 // check valid file path
 if (!isValid(filePath)) {
   rl.close();
@@ -28,7 +39,7 @@ if (!isValid(filePath)) {
     
     let dataSize = (body.length);
 
-    if (fs.existsSync(filePath)) {
+    if (fileExist) {
       rl.question('The file name entered already exists. To overwrite the file, type in \'Y\' and press \'Enter\'. ', (answer) => {
         if (answer === 'y' || answer === 'Y') {
           fs.writeFile(filePath, body, (error) => {
