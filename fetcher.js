@@ -6,25 +6,23 @@ const url = args[0];
 const filePath = args[1];
 
 // request webpage info
-// request(url, (error, response, body) => {
-//   console.log('error: ', error);
-//   console.log('statusCode: ', response && response.statusCode);
-//   console.log('body: ', body);
-// });
-
-
-// fs write file
-// fs.writeFile(args);
-
-fs.writeFile("/tmp/test", "Hey there!", function(err) {
-  if (err) {
-    return console.log(err);
-  }
-  console.log("The file was saved!");
+request(url, (error, response, body) => {
+  let dataSize = (body.length);
+  // write in file system
+  fs.writeFile(filePath, body, function(err) {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(`Downloaded and saved ${dataSize} bytes to ${filePath}`);
+  });
 });
 
-
-// log to console
-
-
-// const fetcher = (args) => {};
+// ROUND ABOUT WAY TO GET FILE SIZE (DATA VARIABLE)
+// request(url, (error, response, body) => {})
+//   .on('response', function(response) {
+//   // unmodified http.IncomingMessage object
+//     response.on('data', function(data) {
+//     // compressed data as it is received
+//       console.log('received ' + data.length + ' bytes of compressed data');
+//     });
+//   });
