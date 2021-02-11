@@ -21,6 +21,12 @@ if (!isValid(filePath)) {
   
   // request webpage info
   request(url, (error, response, body) => {
+    // error or non-200 status code
+    if (error || response.statusCode !== 200) {
+      rl.close();
+      return console.log('There seems to be something wrong with the webpage. Please check the URL or try again later.');
+    }
+    
     let dataSize = (body.length);
 
     if (fs.existsSync(filePath)) {
@@ -55,6 +61,7 @@ if (!isValid(filePath)) {
     }
   });
 }
+
 // ROUND ABOUT WAY TO GET FILE SIZE (DATA VARIABLE)
 // request(url, (error, response, body) => {})
 //   .on('response', function(response) {
